@@ -1,44 +1,52 @@
+//2^3 は 2 * 2 * 2 です。 xとnが与えられます。x^n を求めてください。
 export const question4 = (x: number, n: number): number => {
-    const str = exponentiation(x, n);
-    //8桁切り上げ
-    let result = '';
-    let digitCounter = 0;
-    let decimalFlag = false;
-    for (let i = 0; i < str.length; i++) {
-        result += str[i];
-        if (decimalFlag) {
-            digitCounter++;
-            if (digitCounter >= 8) {
-                //次があれば四捨五入
-                if (i !== str.length - 1 && Number(str[i + 1]) >= 5) {
-                    let num = Number(result);
-                    num += 0.00000001;
-                    return Number(num);
-                } else {
-                    return Number(result);
-                }
-            }
-        }
-        if (str[i] === '.') {
-            decimalFlag = true;
-        }
+    if (n === 0) {
+        return 1;
     }
-    return Number(result);
+
+    return Number(exponentiation(x, n).toFixed(8));
 };
 
-function exponentiation(x: number, n: number): string {
+function exponentiation(x: number, n: number): number {
+    const [intMultiplier, intDivisor, floatMultiplier, floatDivisor] = disassembly(x)
+    const absN = Math.abs(n);
+    const isFloat = x % 1 !== 0;
+
     let result = x;
-    if (n === 0) {
-        result = 1;
-    } else if (n > 0) {
-        for (let i = 1; i < n; i++) {
-            result *= x;
-        }
-    } else {
-        result = 1 / x;
-        for (let i = 1; i < n * -1; i++) {
-            result *= 1 / x;
+    for (let i = 1; i < absN; i++) {
+        if (isFloat) {
+            result *= (1 / (2 << floatMultiplier) + floatDivisor) * 100;
+        } else {
+            result *= (2 << (intMultiplier - 1)) + intDivisor;
         }
     }
-    return result.toString();
+    result *= (n < 0 && x < 0) ? -1 : 1;
+    return n > 0 ? result : 1 / result;
 }
+
+export const disassembly = (x: number): [number, number, number, number] => {
+    const absX = Math.abs(x);
+    const intX = Math.floor(absX);
+    const decimalX = absX / 100;
+
+    let square = 1;
+    let squareCounter = 0; 
+    while (square < intX) {
+        square <<= 1;
+        squareCounter++;
+    }
+
+    let half = 1;
+    let halfCounter = 0;         
+    while (1 / half > halfCounter) {
+        half <<= 1; 
+        halfCounter++;
+    }
+
+    const intMultiplier = squareCounter - 1;
+    const intDivisor = intX - (2 << (intMultiplier - 1));
+    const floatMultiplier = halfCounter - 1;
+    const floatDivisor = decimalX - (1 / (2 << floatMultiplier));
+    return [intMultiplier, intDivisor, floatMultiplier, floatDivisor];
+}
+
