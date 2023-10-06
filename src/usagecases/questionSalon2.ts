@@ -10,7 +10,6 @@ export class ListNode {
     ) {}
 }
 
-
 export const questionSalon2 = (nodeA: ListNode | null, nodeB: ListNode | null): ListNode | null => {
     const result = new ListNode(0);
     let tail = result;
@@ -28,5 +27,5 @@ export const questionSalon2 = (nodeA: ListNode | null, nodeB: ListNode | null): 
         tail = tail.next;
         addVal = Math.floor(addVal / 10);
     }
-    return result.next as ListNode;
+    return result.next ? result.next as ListNode : null;
 };
