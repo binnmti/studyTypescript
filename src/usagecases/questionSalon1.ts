@@ -20,17 +20,12 @@
 // nums = [5,6,70,8,9]
 //   ↓
 // answer = [6,70,8,5,9]
-
-export const questionEvenOddSort = (numbers: number[]): number[] => {
-    let bco = 0;
-    let eco = numbers.length - 1;
-    for (let i = 0; i < numbers.length; i++) {
-        if (numbers[i] % 2 === 0) {
-            [numbers[bco], numbers[i]] = [numbers[i], numbers[bco]];
-            bco++;
-        } else {
-            [numbers[eco], numbers[i]] = [numbers[i], numbers[eco]];
-            eco--;
+export const questionSalon1 = (numbers: number[]): number[] => {
+    let counter = 0;
+    for (const index in numbers) {
+        if (numbers[index] % 2 === 0) {
+            [numbers[counter], numbers[index]] = [numbers[index], numbers[counter]];
+            counter++;
         }
     }
     return numbers;
