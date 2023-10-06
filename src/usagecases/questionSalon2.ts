@@ -12,31 +12,23 @@ export class ListNode {
 
 
 export const questionSalon2 = (nodeA: ListNode | null, nodeB: ListNode | null): ListNode | null => {
-    
     const result = new ListNode(0);
     let tail = result;
-    let pointA = nodeA;
-    let pointB = nodeB;
     let addVal = 0;
-    let loop = true;
-    while (loop) {
-        if (pointA !== null) {
-            addVal += pointA.val;
-            pointA = pointA.next;
+    let a = [];
+    a.length
+    while (addVal > 0 || nodeA || nodeB) {
+        if (nodeA) {
+            addVal += nodeA.val;
+            nodeA = nodeA.next;
         }
-        if (pointB !== null) {
-            addVal += pointB.val;
-            pointB = pointB.next;
+        if (nodeB) {
+            addVal += nodeB.val;
+            nodeB = nodeB.next;
         }
-        tail.val = addVal % 10;
+        tail.next = new ListNode(addVal % 10);
+        tail = tail.next;
         addVal = Math.floor(addVal / 10);
-        if (addVal === 0 && pointA === null && pointB === null) {
-            loop = false;
-        } else {
-            tail.next = new ListNode(0);
-            tail = tail.next;
-        }
     }
-
-    return result;
+    return result.next as ListNode;
 };
