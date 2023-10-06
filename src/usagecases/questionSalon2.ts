@@ -15,8 +15,6 @@ export const questionSalon2 = (nodeA: ListNode | null, nodeB: ListNode | null): 
     const result = new ListNode(0);
     let tail = result;
     let addVal = 0;
-    let a = [];
-    a.length
     while (addVal > 0 || nodeA || nodeB) {
         if (nodeA) {
             addVal += nodeA.val;
