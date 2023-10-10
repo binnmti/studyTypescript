@@ -19,36 +19,50 @@ s = "aaabbccc"
 
 answer = 2文字
 */
+import { Heapq } from 'ts-heapq';
+
 export const question6 = (str: string): number => {
-    const charCounterMap = new Map<string, number>;
+    const charCounterMap = new Map<string, number>();
     for (const s of str) {
         let counter = charCounterMap.get(s);
         charCounterMap.set(s, counter === undefined ? 1 : ++counter);
     }
     let deleteCounter = 0;
-    //a:3, b:2, c:3
-    for (let [s1, counter1] of charCounterMap) {
-        let sameCounter = false;
-        
-        while (true) {
-            for (const [s2, counter2] of charCounterMap) {
-                if (s1 === s2) {
-                    continue;
-                }
-                if (counter1 === counter2) {
-                    sameCounter = true;
-                    counter1--;
-                    charCounterMap.set(s1, counter1);
-                    deleteCounter++;
-                    break;
-                }
-            }
-            if (counter1 === 0 || sameCounter === false) {
-                break;
-            } else {
-                sameCounter = false;
-            }
+    const counts = Array.from(charCounterMap.values());
+    const heap: Heapq<number> = new Heapq<number>([], (a: number, b: number) => a > b);
+    for (const s of counts) {
+        heap.push(s);
+    }
+    while (heap.length() > 1) {
+        const top = heap.pop();
+        if (top === heap.top() && top > 0) {
+            if(top > 1) heap.push(top - 1);
+            deleteCounter++;
         }
     }
+    //a:3, b:2, c:3
+    // for (let [s1, counter1] of charCounterMap) {
+    //     let sameCounter = false;
+        
+    //     while (true) {
+    //         for (const [s2, counter2] of charCounterMap) {
+    //             if (s1 === s2) {
+    //                 continue;
+    //             }
+    //             if (counter1 === counter2) {
+    //                 sameCounter = true;
+    //                 counter1--;
+    //                 charCounterMap.set(s1, counter1);
+    //                 deleteCounter++;
+    //                 break;
+    //             }
+    //         }
+    //         if (counter1 === 0 || sameCounter === false) {
+    //             break;
+    //         } else {
+    //             sameCounter = false;
+    //         }
+    //     }
+    // }
     return deleteCounter;
 };
