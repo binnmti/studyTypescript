@@ -8,27 +8,40 @@
 1 <= nums[i] <= 10000
 1 <= x <= 10^7
 */
- 
-const check = (headMax: number, tailMax: number, nums: number[], x: number): number =>
+//時間計算量:O(n^2) 
+//空間計算量:O(n)
+const check = (headIndex: number, tailIndex: number, headMax: number, tailMax: number, nums: number[], x: number): number =>
 {
-    let operationNumber = 0;
-    for (let i = 0; i < tailMax; i++) {
-        x -= nums[nums.length - 1 - i];
-        operationNumber++; 
+    const sum = headMax + tailMax;
+    const operationNumber = headIndex + tailIndex;
+    return x === sum ? operationNumber : -1;
+}
+
+const getMap = (isLeft: boolean, nums: number[]): Map<number, number> =>
+{
+    const map = new Map<number, number>();
+    map.set(isLeft ? 0 : nums.length - 1, 0);
+    let sum = 0;
+    for (let i = 0; i < nums.length; i++) {
+        if (isLeft) {
+            sum += nums[i];
+            map.set(i + 1, sum);
+        } else {
+            sum += nums[nums.length - 1 - i];
+            map.set(nums.length - 1 - i - 1, sum);
+        }
     }
-    for (let i = 0; i < headMax; i++) {
-        x -= nums[i];
-        operationNumber++; 
-    }
-    return x === 0 ? operationNumber: -1;
+    return map;
 }
 
 export const question7 = (nums: number[], x: number): number => {
     let operationNumber = nums.length;
     let isCheck = false;
+    const headMap = getMap(true, nums);
+    const tailMap = getMap(false, nums);
     for (let i = 0; i <= nums.length; i++) {
         for (let j = 0; j <= nums.length; j++) {
-            const result = check(i, j, nums, x);
+            const result = check(i, j, headMap.get(i) ?? 0, tailMap.get(nums.length - 1 - j) ?? 0, nums, x);
             if (result !== -1) {
                 operationNumber = Math.min(result, operationNumber);
                 isCheck = true;
