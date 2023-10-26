@@ -17,19 +17,14 @@ const check = (headIndex: number, tailIndex: number, headMax: number, tailMax: n
     return x === sum ? operationNumber : -1;
 }
 
-const getMap = (isLeft: boolean, nums: number[]): Map<number, number> =>
+const getMap = (isHead: boolean, nums: number[]): Map<number, number> =>
 {
     const map = new Map<number, number>();
-    map.set(isLeft ? 0 : nums.length - 1, 0);
     let sum = 0;
-    for (let i = 0; i < nums.length; i++) {
-        if (isLeft) {
-            sum += nums[i];
-            map.set(i + 1, sum);
-        } else {
-            sum += nums[nums.length - 1 - i];
-            map.set(nums.length - 1 - i - 1, sum);
-        }
+    for (let i = 0; i <= nums.length; i++) {
+        const index = isHead ? i : nums.length - 1 - i;
+        sum += nums[index];
+        map.set((isHead ? 1 : -1) + index, sum);
     }
     return map;
 }
