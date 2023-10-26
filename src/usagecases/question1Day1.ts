@@ -28,9 +28,8 @@ export const sort = (schedules: number[][]): number[][] => {
 export const question1Day1 = (schedules: number[][]): boolean => {
     schedules = sort(schedules);
     for (let i = 0; i < schedules.length; i++) {
-        const [start1, end1] = schedules[i];
         for (let j = i + 1; j < schedules.length; j++) {
-            if (start1 + (end1 - start1) > schedules[j][0]) {
+            if (schedules[i][1] > schedules[j][0]) {
                 return false;
             }
         }
