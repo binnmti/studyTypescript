@@ -72,7 +72,7 @@ export const mergeSort = (schedules: number[][], start: number, end: number): nu
 export const quickSort = (schedules: number[][], start: number, end: number): number[][] => {
 }
 
-export const question1Day1 = (schedules: number[][]): boolean => {
+export const questionDay1_1 = (schedules: number[][]): boolean => {
     // o schedules = bubbleSort(schedules, 0, schedules.length - 1);
     // o schedules = selectionSort(schedules, 0, schedules.length - 1);
     // o schedules = mergeSort(schedules, 0, schedules.length - 1);
