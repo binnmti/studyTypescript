@@ -10,37 +10,22 @@
 */
 //時間計算量:O(n^2) 
 //空間計算量:O(n)
-const check = (headIndex: number, tailIndex: number, headMax: number, tailMax: number, nums: number[], x: number): number =>
-{
-    const sum = headMax + tailMax;
-    const operationNumber = headIndex + tailIndex;
-    return x === sum ? operationNumber : -1;
-}
-
-const getMap = (isHead: boolean, nums: number[]): Map<number, number> =>
-{
-    const map = new Map<number, number>();
-    let sum = 0;
-    for (let i = 0; i <= nums.length; i++) {
-        const index = isHead ? i : nums.length - 1 - i;
-        sum += nums[index];
-        map.set((isHead ? 1 : -1) + index, sum);
-    }
-    return map;
-}
 
 export const question7 = (nums: number[], x: number): number => {
-    let operationNumber = nums.length;
-    let isCheck = false;
-    const headMap = getMap(true, nums);
-    const tailMap = getMap(false, nums);
-    for (let i = 0; i <= nums.length; i++) {
-        for (let j = 0; j <= nums.length; j++) {
-            const result = check(i, j, headMap.get(i) ?? 0, tailMap.get(nums.length - 1 - j) ?? 0, nums, x);
-            if (result !== -1) {
-                operationNumber = Math.min(result, operationNumber);
-                isCheck = true;
-            }
+    let sum = 0;
+    let hit = 0;
+    for (let i = 0; i < nums.length; i++) {
+        sum += nums[i];
+        if (sum === x) {
+            hit = i;
+            break;
+        }
+    }
+    for (let i = nums.length - 1; i >= 0; i--) {
+        sum += nums[i];
+        if (sum === x) {
+            hit = i;
+            break;
         }
     }
     return isCheck ? operationNumber : -1;

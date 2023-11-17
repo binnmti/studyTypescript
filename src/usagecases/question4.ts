@@ -20,7 +20,7 @@ export const hierarchicalMultiplication = (x: number, n: number): number => {
 
     const result = hierarchicalMultiplication(x, half);
     let mul = result * result;
-    if (n % 2 != 0) {
+    if (n % 2 !== 0) {
         mul *= x;
     }
     return mul;
