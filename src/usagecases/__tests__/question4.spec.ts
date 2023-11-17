@@ -4,7 +4,7 @@ describe('question4', () => {
         expect(question4(5,2)).toBe(25);
     });
     it('2^9', () => {
-        expect(question4(2,9)).toBe(512);
+        expect(question4(2,11)).toBe(2048);
     });
     it('5^3', () => {
         expect(question4(5,3)).toBe(125);
