@@ -1,52 +1,32 @@
 //2^3 は 2 * 2 * 2 です。 xとnが与えられます。x^n を求めてください。
 export const question4 = (x: number, n: number): number => {
-    if (n === 0) {
-        return 1;
-    }
+    if (x === 0) return 0;
+    if (n === 0) return 1;
 
-    return Number(exponentiation(x, n).toFixed(8));
+    const map = new Map<number, number>();
+    map.set(1, x);
+    map.set(2, x * x);
+    
+    let result;
+    if (n > 0) {
+        result = hierarchicalMultiplication(map, x, n);
+    } else {
+        result = 1 / hierarchicalMultiplication(map, x, -n);
+    }
+    return Number(result.toFixed(8));
 };
 
-function exponentiation(x: number, n: number): number {
-    const [intMultiplier, intDivisor, floatMultiplier, floatDivisor] = disassembly(x)
-    const absN = Math.abs(n);
-    const isFloat = x % 1 !== 0;
-
-    let result = x;
-    for (let i = 1; i < absN; i++) {
-        if (isFloat) {
-            result *= (1 / (2 << floatMultiplier) + floatDivisor) * 100;
-        } else {
-            result *= (2 << (intMultiplier - 1)) + intDivisor;
-        }
+export const hierarchicalMultiplication = (map:Map<number, number>, x: number, n: number): number => {
+    if (map.has(n)) {
+        return map.get(n)!;
     }
-    result *= (n < 0 && x < 0) ? -1 : 1;
-    return n > 0 ? result : 1 / result;
+    
+    const half = Math.floor(n / 2);
+    const result = hierarchicalMultiplication(map, x, half);
+    let exponentiation = result * result;
+    if (n % 2 != 0) {
+        exponentiation *= x;
+    }
+    map.set(n, exponentiation);
+    return exponentiation;
 }
-
-export const disassembly = (x: number): [number, number, number, number] => {
-    const absX = Math.abs(x);
-    const intX = Math.floor(absX);
-    const decimalX = absX / 100;
-
-    let square = 1;
-    let squareCounter = 0; 
-    while (square < intX) {
-        square <<= 1;
-        squareCounter++;
-    }
-
-    let half = 1;
-    let halfCounter = 0;         
-    while (1 / half > halfCounter) {
-        half <<= 1; 
-        halfCounter++;
-    }
-
-    const intMultiplier = squareCounter - 1;
-    const intDivisor = intX - (2 << (intMultiplier - 1));
-    const floatMultiplier = halfCounter - 1;
-    const floatDivisor = decimalX - (1 / (2 << floatMultiplier));
-    return [intMultiplier, intDivisor, floatMultiplier, floatDivisor];
-}
-

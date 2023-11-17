@@ -1,7 +1,10 @@
-import { question4, disassembly } from '../question4';
+import { question4 } from '../question4';
 describe('question4', () => {
     it('5^2', () => {
         expect(question4(5,2)).toBe(25);
+    });
+    it('2^9', () => {
+        expect(question4(2,9)).toBe(512);
     });
     it('5^3', () => {
         expect(question4(5,3)).toBe(125);
@@ -30,7 +33,7 @@ describe('question4', () => {
     it('13', () => {
         expect(question4(-13.62608221, 3)).toBe(-2529.95626992);
     });
-    // it('a long long', () => {
-    //     expect(question4(1.12345678, -1073741824)).toBe(0.00000000);
-    // });
+    it('a long long', () => {
+        expect(question4(1.12345678, -1073741824)).toBe(0.00000000);
+    });
 });
