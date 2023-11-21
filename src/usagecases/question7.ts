@@ -8,25 +8,42 @@
 1 <= nums[i] <= 10000
 1 <= x <= 10^7
 */
-//時間計算量:O(n^2) 
-//空間計算量:O(n)
+//時間計算量:O(n) 
+//空間計算量:O(1)
 
 export const question7 = (nums: number[], x: number): number => {
-    let sum = 0;
-    let hit = 0;
+    let operationNumber = Number.MAX_VALUE;
+    let leftSum = 0;
+    let leftIdx = -1;
     for (let i = 0; i < nums.length; i++) {
-        sum += nums[i];
-        if (sum === x) {
-            hit = i;
+        leftSum += nums[i];
+        if (leftSum >= x) {
+            leftIdx = i;
             break;
         }
     }
+    let rightSum = 0;
     for (let i = nums.length - 1; i >= 0; i--) {
-        sum += nums[i];
-        if (sum === x) {
-            hit = i;
-            break;
+        rightSum += nums[i];
+        while (leftSum + rightSum >= x) {
+            if (leftIdx !== -1) {
+                leftSum -= nums[leftIdx];
+            }
+            if (leftSum + rightSum === x) {
+                let index = nums.length - i;
+                if (leftIdx !== -1) {
+                    index += leftIdx;
+                }
+                if (operationNumber > index) {
+                    operationNumber = index;
+                }
+            }
+            leftIdx--;
         }
     }
-    return isCheck ? operationNumber : -1;
-};
+    if (operationNumber === Number.MAX_VALUE) {
+        return -1;
+    } else {
+        return operationNumber;
+    }
+}
