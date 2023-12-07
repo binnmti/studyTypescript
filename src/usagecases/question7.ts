@@ -8,40 +8,42 @@
 1 <= nums[i] <= 10000
 1 <= x <= 10^7
 */
-//時間計算量:O(n^2) 
-//空間計算量:O(n)
-const check = (headIndex: number, tailIndex: number, headMax: number, tailMax: number, nums: number[], x: number): number =>
-{
-    const sum = headMax + tailMax;
-    const operationNumber = headIndex + tailIndex;
-    return x === sum ? operationNumber : -1;
-}
-
-const getMap = (isHead: boolean, nums: number[]): Map<number, number> =>
-{
-    const map = new Map<number, number>();
-    let sum = 0;
-    for (let i = 0; i <= nums.length; i++) {
-        const index = isHead ? i : nums.length - 1 - i;
-        sum += nums[index];
-        map.set((isHead ? 1 : -1) + index, sum);
-    }
-    return map;
-}
+//時間計算量:O(n) 
+//空間計算量:O(1)
 
 export const question7 = (nums: number[], x: number): number => {
-    let operationNumber = nums.length;
-    let isCheck = false;
-    const headMap = getMap(true, nums);
-    const tailMap = getMap(false, nums);
-    for (let i = 0; i <= nums.length; i++) {
-        for (let j = 0; j <= nums.length; j++) {
-            const result = check(i, j, headMap.get(i) ?? 0, tailMap.get(nums.length - 1 - j) ?? 0, nums, x);
-            if (result !== -1) {
-                operationNumber = Math.min(result, operationNumber);
-                isCheck = true;
-            }
+    let operationNumber = Number.MAX_VALUE;
+    let leftSum = 0;
+    let leftIdx = -1;
+    for (let i = 0; i < nums.length; i++) {
+        leftSum += nums[i];
+        if (leftSum >= x) {
+            leftIdx = i;
+            break;
         }
     }
-    return isCheck ? operationNumber : -1;
-};
+    let rightSum = 0;
+    for (let i = nums.length - 1; i >= 0; i--) {
+        rightSum += nums[i];
+        while (leftSum + rightSum >= x) {
+            if (leftIdx !== -1) {
+                leftSum -= nums[leftIdx];
+            }
+            if (leftSum + rightSum === x) {
+                let index = nums.length - i;
+                if (leftIdx !== -1) {
+                    index += leftIdx;
+                }
+                if (operationNumber > index) {
+                    operationNumber = index;
+                }
+            }
+            leftIdx--;
+        }
+    }
+    if (operationNumber === Number.MAX_VALUE) {
+        return -1;
+    } else {
+        return operationNumber;
+    }
+}

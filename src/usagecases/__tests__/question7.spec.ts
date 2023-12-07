@@ -21,4 +21,7 @@ describe('question7', () => {
     it('test7', () => {
         expect(question7([100], 100)).toBe(1);
     });
+    it('test8', () => {
+        expect(question7([10, 1, 1, 1, 1, 1], 5)).toBe(5);
+    });
 });
