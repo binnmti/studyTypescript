@@ -24,39 +24,26 @@ ans = [[1,2,6], [1,3,5], [2,3,4]]
 2 + 3 + 4 = 9
 
 */
-export const bitCount = (idx : number): number => {
-    let count = 0;
-    for (let bit = 1; bit <= idx; bit <<= 1) {
-        count += (idx & bit) ? 1 : 0;
-    }
-    return count;
-}
-
-export const bitPlus = (idx : number, n : number): number[] | null => {
+export const bitPlus = (idx : number, k : number, n : number): number[] | null => {
     const result : number[] = [];
     let plus = 0;
     let i = 1;
+    let count = 0;
     for (let bit = 1; bit <= idx; bit <<= 1, i++) {
-        if (!(idx & bit)) {
-            continue;
-        } 
-
+        if (!(idx & bit))  continue;
+        
         result.push(i);
         plus += i; 
-    }
-    return plus === n ? result : null;
+        count += 1;
+}
+    return count === k && plus === n ? result : null;
 }
 
 export const question10 = (k : number, n : number): number[][] => {
     const pattern : number[][] = [];
     for (let idx = 1; idx < (1 << 9); idx++) {
-        const count = bitCount(idx);
-        if (count !== k) {
-            continue;
-        } 
-            
-        const result = bitPlus(idx, n);
-        if (result !== null) {
+        const result = bitPlus(idx, k, n);
+        if (result) {
             pattern.push(result);
         }
     }
