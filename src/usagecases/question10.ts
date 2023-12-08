@@ -24,28 +24,30 @@ ans = [[1,2,6], [1,3,5], [2,3,4]]
 2 + 3 + 4 = 9
 
 */
-export const bitPlus = (idx : number, k : number, n : number): number[] | null => {
+// 時間計算量:O(n log n)
+// 空間計算量:O(n)
+export const checkSum = (idx : number, k : number, n : number): number[] | null => {
     const result : number[] = [];
-    let plus = 0;
-    let i = 1;
     let count = 0;
-    for (let bit = 1; bit <= idx; bit <<= 1, i++) {
-        if (!(idx & bit))  continue;
-        
-        result.push(i);
-        plus += i; 
-        count += 1;
-}
-    return count === k && plus === n ? result : null;
+    let num = 1;
+    for (let bit = 1; bit <= idx; bit <<= 1) {
+        if (idx & bit) {
+            count++;
+            result.push(num);
+        }
+        num++;
+    }
+    const sum = result.reduce((a, b) => a + b, 0);
+    return count === k && sum === n ? result : null;
 }
 
 export const question10 = (k : number, n : number): number[][] => {
-    const pattern : number[][] = [];
+    const hits : number[][] = [];
     for (let idx = 1; idx < (1 << 9); idx++) {
-        const result = bitPlus(idx, k, n);
-        if (result) {
-            pattern.push(result);
+        const hit = checkSum(idx, k, n);
+        if (hit) {
+            hits.push(hit);
         }
     }
-    return pattern;
+    return hits;
 };
