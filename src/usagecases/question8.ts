@@ -34,42 +34,4 @@ export const question8 = (s: string, x: number): string => {
         }
     }
     return word[x - 1];
-
-
-    // let result = new Map();
-    // let word = "";
-    // for (const str of s) {
-    //     if (isNaN(parseInt(str))) {
-    //         word += str;
-    //     } else {
-    //         let tmp = "";
-    //         result.set(word, parseInt(str));
-    //         for (let i = 0; i < parseInt(str); i++) {
-    //             if (tmp.length + word.length > x) {
-    //                 tmp += word.substring(0, x - word.length);
-    //                 break;
-    //             }
-    //             tmp += word;
-    //         }
-    //         word = tmp;
-    //         if (word.length > x) {
-    //             break;
-    //         }
-    //     }
-    // }
-    // return word[x - 1];
-
-    // let result = "";
-    // for (const str of s) {
-    //     if (isNaN(parseInt(str))) {
-    //         result += str;
-    //     } else {
-    //         let tmp = "";
-    //         for (let i = 0; i < parseInt(str); i++) {
-    //             tmp += result;
-    //         }
-    //         result = tmp;
-    //     }
-    // }
-    // return result[x - 1];
 };
