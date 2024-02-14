@@ -2,7 +2,7 @@
 */
 // 時間計算量:O(n)
 // 空間計算量:O(1)
-const checkRightHand = (direct:number, i:number, j:number, w:number, h:number, image: number[][]) => {
+const checkRightHand = (direction:number, i:number, j:number, w:number, h:number, image: number[][]) => {
 
     //↓
     let nextI = i;
@@ -14,7 +14,7 @@ const checkRightHand = (direct:number, i:number, j:number, w:number, h:number, i
             image[nextI][nextJ] = 2;
         }
 
-        if (direct === 0) {
+        if (direction == 0) {
             let check = false;
             //↓
             if (!check && nextI + 1 < h) {
@@ -22,30 +22,35 @@ const checkRightHand = (direct:number, i:number, j:number, w:number, h:number, i
                     nextI = nextI + 1;
                     check = true;
                 }
-            }
-            //←
-            if (!check && nextJ - 1 >= 0) {
-                if (image[nextI][nextJ - 1] !== 0) {
-                    nextJ = nextJ - 1;
-                    check = true;
+                direction = 0;
+            } else {
+                //←
+                if (!check && nextJ - 1 >= 0) {
+                    if (image[nextI][nextJ - 1] !== 0) {
+                        nextJ = nextJ - 1;
+                        check = true;
+                    }
+                    direction = 1;
                 }
-            }
-            //↑
-            if (!check && nextI - 1 >= 0) {
-                if (image[nextI - 1][nextJ] !== 0) {
-                    nextI = nextI - 1;
-                    check = true;
+                //↑
+                if (!check && nextI - 1 >= 0) {
+                    if (image[nextI - 1][nextJ] !== 0) {
+                        nextI = nextI - 1;
+                        check = true;
+                    }
+                    direction = 2;
                 }
-            }
-            //→
-            if (!check && nextJ + 1 < w) {
-                if (image[nextI][nextJ + 1] !== 0) {
-                    nextJ = nextJ + 1;
-                    check = true;
+                //→
+                if (!check && nextJ + 1 < w) {
+                    if (image[nextI][nextJ + 1] !== 0) {
+                        nextJ = nextJ + 1;
+                        check = true;
+                    }
+                    direction = 3;
                 }
             }
         }
-        else if (direct === 1) {
+        else if (direction == 1) {
             let check = false;
             //←
             if (!check && nextJ - 1 >= 0) {
@@ -53,30 +58,36 @@ const checkRightHand = (direct:number, i:number, j:number, w:number, h:number, i
                     nextJ = nextJ - 1;
                     check = true;
                 }
+                direction = 1;
             }
-            //↑
-            if (!check && nextI - 1 >= 0) {
-                if (image[nextI - 1][nextJ] !== 0) {
-                    nextI = nextI - 1;
-                    check = true;
+            else {
+                //↑
+                if (!check && nextI - 1 >= 0) {
+                    if (image[nextI - 1][nextJ] !== 0) {
+                        nextI = nextI - 1;
+                        check = true;
+                    }
+                    direction = 2;
                 }
-            }
-            //→
-            if (!check && nextJ + 1 < w) {
-                if (image[nextI][nextJ + 1] !== 0) {
-                    nextJ = nextJ + 1;
-                    check = true;
+                //→
+                if (!check && nextJ + 1 < w) {
+                    if (image[nextI][nextJ + 1] !== 0) {
+                        nextJ = nextJ + 1;
+                        check = true;
+                    }
+                    direction = 3;
                 }
-            }
-            //↓
-            if (!check && nextI + 1 < h) {
-                if (image[nextI + 1][nextJ] !== 0) {
-                    nextI = nextI + 1;
-                    check = true;
-                }
+                //↓
+                if (!check && nextI + 1 < h) {
+                    if (image[nextI + 1][nextJ] !== 0) {
+                        nextI = nextI + 1;
+                        check = true;
+                    }
+                    direction = 0;
+                }                 
             }
         }
-        else if (direct === 2) {
+        else if (direction == 2) {
             let check = false;
             //↑
             if (!check && nextI - 1 >= 0) {
@@ -84,30 +95,36 @@ const checkRightHand = (direct:number, i:number, j:number, w:number, h:number, i
                     nextI = nextI - 1;
                     check = true;
                 }
+                direction = 2;
             }
-            //→
-            if (!check && nextJ + 1 < w) {
-                if (image[nextI][nextJ + 1] !== 0) {
-                    nextJ = nextJ + 1;
-                    check = true;
+            else {
+                //→
+                if (!check && nextJ + 1 < w) {
+                    if (image[nextI][nextJ + 1] !== 0) {
+                        nextJ = nextJ + 1;
+                        check = true;
+                    }
+                    direction = 3;
                 }
-            }
-            //↓
-            if (!check && nextI + 1 < h) {
-                if (image[nextI + 1][nextJ] !== 0) {
-                    nextI = nextI + 1;
-                    check = true;
-                }
-            }
-            //←
-            if (!check && nextJ - 1 >= 0) {
-                if (image[nextI][nextJ - 1] !== 0) {
-                    nextJ = nextJ - 1;
-                    check = true;
+                //↓
+                if (!check && nextI + 1 < h) {
+                    if (image[nextI + 1][nextJ] !== 0) {
+                        nextI = nextI + 1;
+                        check = true;
+                    }
+                    direction = 0;
+                }                 
+                //←
+                if (!check && nextJ - 1 >= 0) {
+                    if (image[nextI][nextJ - 1] !== 0) {
+                        nextJ = nextJ - 1;
+                        check = true;
+                    }
+                    direction = 1;
                 }
             }
         }
-        else if (direct === 3) {
+        else if (direction == 3) {
             let check = false;
             //→
             if (!check && nextJ + 1 < w) {
@@ -115,156 +132,35 @@ const checkRightHand = (direct:number, i:number, j:number, w:number, h:number, i
                     nextJ = nextJ + 1;
                     check = true;
                 }
+                direction = 3;
             }
-            //↓
-            if (!check && nextI + 1 < h) {
-                if (image[nextI + 1][nextJ] !== 0) {
-                    nextI = nextI + 1;
-                    check = true;
+            else {
+                //↓
+                if (!check && nextI + 1 < h) {
+                    if (image[nextI + 1][nextJ] !== 0) {
+                        nextI = nextI + 1;
+                        check = true;
+                    }
+                    direction = 0;
+                }                 
+                //←
+                if (!check && nextJ - 1 >= 0) {
+                    if (image[nextI][nextJ - 1] !== 0) {
+                        nextJ = nextJ - 1;
+                        check = true;
+                    }
+                    direction = 1;
                 }
-            }
-            //←
-            if (!check && nextJ - 1 >= 0) {
-                if (image[nextI][nextJ - 1] !== 0) {
-                    nextJ = nextJ - 1;
-                    check = true;
-                }
-            }
-            //↑
-            if (!check && nextI - 1 >= 0) {
-                if (image[nextI - 1][nextJ] !== 0) {
-                    nextI = nextI - 1;
-                    check = true;
-                }
-            }
-        }
-        else if (direct === 4) {
-            let check = false;
-            //↑
-            if (!check && nextI - 1 >= 0) {
-                if (image[nextI - 1][nextJ] !== 0) {
-                    nextI = nextI - 1;
-                    check = true;
-                }
-            }
-            //←
-            if (!check && nextJ - 1 >= 0) {
-                if (image[nextI][nextJ - 1] !== 0) {
-                    nextJ = nextJ - 1;
-                    check = true;
-                }
-            }
-            //↓
-            if (!check && nextI + 1 < h) {
-                if (image[nextI + 1][nextJ] !== 0) {
-                    nextI = nextI + 1;
-                    check = true;
-                }
-            }
-            //→
-            if (!check && nextJ + 1 < w) {
-                if (image[nextI][nextJ + 1] !== 0) {
-                    nextJ = nextJ + 1;
-                    check = true;
+                //↑
+                if (!check && nextI - 1 >= 0) {
+                    if (image[nextI - 1][nextJ] !== 0) {
+                        nextI = nextI - 1;
+                        check = true;
+                    }
+                    direction = 2;
                 }
             }
         }
-        else if (direct === 5) {
-            let check = false;
-            //←
-            if (!check && nextJ - 1 >= 0) {
-                if (image[nextI][nextJ - 1] !== 0) {
-                    nextJ = nextJ - 1;
-                    check = true;
-                }
-            }
-            //↓
-            if (!check && nextI + 1 < h) {
-                if (image[nextI + 1][nextJ] !== 0) {
-                    nextI = nextI + 1;
-                    check = true;
-                }
-            }
-            //→
-            if (!check && nextJ + 1 < w) {
-                if (image[nextI][nextJ + 1] !== 0) {
-                    nextJ = nextJ + 1;
-                    check = true;
-                }
-            }
-            //↑
-            if (!check && nextI - 1 >= 0) {
-                if (image[nextI - 1][nextJ] !== 0) {
-                    nextI = nextI - 1;
-                    check = true;
-                }
-            }
-        }
-        else if (direct === 6) {
-            let check = false;
-            //↓
-            if (!check && nextI + 1 < h) {
-                if (image[nextI + 1][nextJ] !== 0) {
-                    nextI = nextI + 1;
-                    check = true;
-                }
-            }
-            //→
-            if (!check && nextJ + 1 < w) {
-                if (image[nextI][nextJ + 1] !== 0) {
-                    nextJ = nextJ + 1;
-                    check = true;
-                }
-            }
-            //↑
-            if (!check && nextI - 1 >= 0) {
-                if (image[nextI - 1][nextJ] !== 0) {
-                    nextI = nextI - 1;
-                    check = true;
-                }
-            }
-            //←
-            if (!check && nextJ - 1 >= 0) {
-                if (image[nextI][nextJ - 1] !== 0) {
-                    nextJ = nextJ - 1;
-                    check = true;
-                }
-            }
-        }
-        else if (direct === 7) {
-            let check = false;
-            //→
-            if (!check && nextJ + 1 < w) {
-                if (image[nextI][nextJ + 1] !== 0) {
-                    nextJ = nextJ + 1;
-                    check = true;
-                }
-            }
-            //↑
-            if (!check && nextI - 1 >= 0) {
-                if (image[nextI - 1][nextJ] !== 0) {
-                    nextI = nextI - 1;
-                    check = true;
-                }
-            }
-            //←
-            if (!check && nextJ - 1 >= 0) {
-                if (image[nextI][nextJ - 1] !== 0) {
-                    nextJ = nextJ - 1;
-                    check = true;
-                }
-            }
-            //↓
-            if (!check && nextI + 1 < h) {
-                if (image[nextI + 1][nextJ] !== 0) {
-                    nextI = nextI + 1;
-                    check = true;
-                }
-            }
-        }
-
-
-
 
 
 
@@ -324,10 +220,6 @@ export const questionMorning2 = (image: number[][]): number[][] => {
                 checkRightHand(1, i, j, w, h, image);
                 checkRightHand(2, i, j, w, h, image);
                 checkRightHand(3, i, j, w, h, image);
-                checkRightHand(4, i, j, w, h, image);
-                checkRightHand(5, i, j, w, h, image);
-                checkRightHand(6, i, j, w, h, image);
-                checkRightHand(7, i, j, w, h, image);
             }
         }
     }
