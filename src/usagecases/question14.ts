@@ -22,10 +22,31 @@ Frame 25.png
 
 マイクが、スタート位置からゴールにたどり着くまでに集めることができる最大のコインの枚数を返してください。
 */
-// 時間計算量:O(2^(w+h-1))
+// 時間計算量:O(n)
 // 空間計算量:O(1)
 
+export const isJump = (x:number, matrix: number[][]): boolean => {
+    if (matrix[1][x + 1] === 1) {
+        return true;
+    } else if(matrix[0][x + 1] === 2 && matrix[1][x + 1] === 2){
+        if (matrix[0][x + 2] !== 2) {
+            return true;
+        }
+    } else if(matrix[0][x + 1] === 2){
+        if (matrix[1][x + 2] !== 1 && x !== matrix[0].length - 2) {
+            return true;
+        }
+    }
+    return false;
+}
+
 export const question14 = (matrix: number[][]): number => {
-    let maxCoin = -1;
-    return maxCoin;
+    let coin = 0;
+    for (let x = 0; x < matrix[0].length; x++) {
+        if (matrix[1][x] === 2) coin++;
+        if (!isJump(x, matrix)) continue;
+        x++;
+        if (matrix[0][x] === 2) coin++;
+    }
+    return coin;
 };
