@@ -18,35 +18,49 @@ matrix = [
   [0, 2, 0, 2, 0, 2, 1, 0],
   [0, 0, 2, 0, 1, 2, 0, 0]
 ]
-Frame 25.png
 
 マイクが、スタート位置からゴールにたどり着くまでに集めることができる最大のコインの枚数を返してください。
 */
 // 時間計算量:O(n)
 // 空間計算量:O(1)
+enum CellItem {
+    Nothing = 0,
+    Ghost = 1,
+    Coin = 2
+}
 
-export const isJump = (x:number, matrix: number[][]): boolean => {
-    if (matrix[1][x + 1] === 1) {
+export const isJump = (x: number, matrix: number[][]): boolean => {
+    // 1個先上が幽霊 or 最後から1個前はジャンプしない
+    if (matrix[0][x + 1] === CellItem.Ghost || x === matrix[0].length - 2) {
+        return false;
+    } 
+    // 1個先下が幽霊ならジャンプ
+    if (matrix[1][x + 1] === CellItem.Ghost) {
         return true;
-    } else if(matrix[0][x + 1] === 2 && matrix[1][x + 1] === 2){
-        if (matrix[0][x + 2] !== 2) {
-            return true;
-        }
-    } else if(matrix[0][x + 1] === 2){
-        if (matrix[1][x + 2] !== 1 && x !== matrix[0].length - 2) {
-            return true;
-        }
     }
-    return false;
+    // 1個先が両方コインの時
+    if (matrix[0][x + 1] === CellItem.Coin && matrix[1][x + 1] === CellItem.Coin) {
+        // 2個先上にコインがあるならジャンプしない、それ以外はジャンプ
+        return matrix[0][x + 2] !== CellItem.Coin;
+    }
+    // 2個先上が幽霊じゃなくて、1個先下がコインならジャンプ、それ以外はジャンプしない
+    return matrix[0][x + 1] === CellItem.Coin && matrix[1][x + 2] !== CellItem.Ghost;
 }
 
 export const question14 = (matrix: number[][]): number => {
     let coin = 0;
-    for (let x = 0; x < matrix[0].length; x++) {
-        if (matrix[1][x] === 2) coin++;
-        if (!isJump(x, matrix)) continue;
+    let x = 0;
+    while (x < matrix[0].length) {
+        if (matrix[1][x] === CellItem.Coin) {
+            coin++;
+        } 
+        if (!isJump(x++, matrix)) {
+            continue;
+        } 
+        if (matrix[0][x] === CellItem.Coin) {
+            coin++;
+        } 
         x++;
-        if (matrix[0][x] === 2) coin++;
     }
     return coin;
 };
